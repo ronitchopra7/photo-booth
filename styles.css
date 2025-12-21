@@ -6,9 +6,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 15s ease infinite;
+    background: #e5e5e5;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -16,33 +14,6 @@ body {
     padding: 20px;
     position: relative;
     overflow-x: hidden;
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
 }
 
 .container {
@@ -82,15 +53,42 @@ header {
     margin-bottom: 30px;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.logo-emoji {
+    font-size: 4em;
+    display: inline-block;
+    animation: logoFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes logoFloat {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+}
+
 header h1 {
-    font-size: 2.5em;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 3em;
+    color: #000000;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 header p {
     color: #666;
     font-size: 1.1em;
+    margin-top: 10px;
 }
 
 .main-content {
@@ -420,8 +418,17 @@ header p {
         padding: 20px;
     }
 
+    .logo {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .logo-emoji {
+        font-size: 3em;
+    }
+    
     header h1 {
-        font-size: 2em;
+        font-size: 2.2em;
     }
 
     .photo-preview-grid {
