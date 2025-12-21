@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Booth - Selfie Strip Maker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📸 Photo Booth</h1>
+            <p>Take 4 selfies to create your strip!</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Camera View -->
+            <div id="camera-section" class="camera-section">
+                <div class="camera-container">
+                    <video id="video" autoplay playsinline></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                </div>
+                <div class="photo-preview-grid">
+                    <div class="photo-slot">
+                        <div class="photo-number">1</div>
+                        <img id="photo-1" class="preview-photo" alt="Photo 1">
+                    </div>
+                    <div class="photo-slot">
+                        <div class="photo-number">2</div>
+                        <img id="photo-2" class="preview-photo" alt="Photo 2">
+                    </div>
+                    <div class="photo-slot">
+                        <div class="photo-number">3</div>
+                        <img id="photo-3" class="preview-photo" alt="Photo 3">
+                    </div>
+                    <div class="photo-slot">
+                        <div class="photo-number">4</div>
+                        <img id="photo-4" class="preview-photo" alt="Photo 4">
+                    </div>
+                </div>
+                <div class="controls">
+                    <button id="capture-btn" class="btn btn-primary">📷 Take Photo</button>
+                    <button id="reset-btn" class="btn btn-secondary">🔄 Start Over</button>
+                </div>
+            </div>
+
+            <!-- Strip Result View -->
+            <div id="strip-section" class="strip-section" style="display: none;">
+                <div class="strip-container">
+                    <canvas id="strip-canvas"></canvas>
+                </div>
+                <div class="strip-controls">
+                    <button id="download-btn" class="btn btn-primary">💾 Download Strip</button>
+                    <button id="share-btn" class="btn btn-primary">📤 Share</button>
+                    <button id="new-strip-btn" class="btn btn-secondary">✨ New Strip</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
