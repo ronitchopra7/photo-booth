@@ -1,0 +1,18 @@
+{
+  "name": "photo-booth",
+  "version": "1.0.0",
+  "description": "Make sharable selfie strips to share to your friends!",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "photo-booth",
+    "selfie",
+    "strip"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+

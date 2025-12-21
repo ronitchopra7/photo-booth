@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>📸 Photo Booth</h1>
+            <h1>📷 Photo Booth</h1>
             <p>Take 4 selfies to create your strip!</p>
         </header>
 
@@ -19,6 +19,9 @@
                 <div class="camera-container">
                     <video id="video" autoplay playsinline></video>
                     <canvas id="canvas" style="display: none;"></canvas>
+                    <div id="countdown-overlay" class="countdown-overlay" style="display: none;">
+                        <div id="countdown-number" class="countdown-number">3</div>
+                    </div>
                 </div>
                 <div class="photo-preview-grid">
                     <div class="photo-slot">
@@ -46,8 +49,52 @@
 
             <!-- Strip Result View -->
             <div id="strip-section" class="strip-section" style="display: none;">
+                <div class="color-picker-section">
+                    <div class="color-picker-row">
+                        <div class="color-picker-item">
+                            <label for="background-color">Background:</label>
+                            <div class="color-picker-container">
+                                <input type="color" id="background-color" value="#ffffff">
+                                <div class="preset-colors" id="background-presets">
+                                    <button class="color-preset" data-color="#e8a5a5" style="background: #e8a5a5;" title="Red"></button>
+                                    <button class="color-preset" data-color="#e8c5a5" style="background: #e8c5a5;" title="Orange"></button>
+                                    <button class="color-preset" data-color="#e8d8a5" style="background: #e8d8a5;" title="Yellow"></button>
+                                    <button class="color-preset" data-color="#a5e8a5" style="background: #a5e8a5;" title="Green"></button>
+                                    <button class="color-preset" data-color="#a5e8e8" style="background: #a5e8e8;" title="Cyan"></button>
+                                    <button class="color-preset" data-color="#a5c5e8" style="background: #a5c5e8;" title="Blue"></button>
+                                    <button class="color-preset" data-color="#c5a5e8" style="background: #c5a5e8;" title="Purple"></button>
+                                    <button class="color-preset" data-color="#ffffff" style="background: #ffffff; border: 1px solid #ddd;" title="White"></button>
+                                    <button class="color-preset" data-color="#808080" style="background: #808080;" title="Gray"></button>
+                                    <button class="color-preset" data-color="#000000" style="background: #000000;" title="Black"></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="color-picker-item">
+                            <label for="border-color">Borders:</label>
+                            <div class="color-picker-container">
+                                <input type="color" id="border-color" value="#ffffff">
+                                <div class="preset-colors" id="border-presets">
+                                    <button class="color-preset" data-color="#e8a5a5" style="background: #e8a5a5;" title="Red"></button>
+                                    <button class="color-preset" data-color="#e8c5a5" style="background: #e8c5a5;" title="Orange"></button>
+                                    <button class="color-preset" data-color="#e8d8a5" style="background: #e8d8a5;" title="Yellow"></button>
+                                    <button class="color-preset" data-color="#a5e8a5" style="background: #a5e8a5;" title="Green"></button>
+                                    <button class="color-preset" data-color="#a5e8e8" style="background: #a5e8e8;" title="Cyan"></button>
+                                    <button class="color-preset" data-color="#a5c5e8" style="background: #a5c5e8;" title="Blue"></button>
+                                    <button class="color-preset" data-color="#c5a5e8" style="background: #c5a5e8;" title="Purple"></button>
+                                    <button class="color-preset" data-color="#ffffff" style="background: #ffffff; border: 1px solid #ddd;" title="White"></button>
+                                    <button class="color-preset" data-color="#808080" style="background: #808080;" title="Gray"></button>
+                                    <button class="color-preset" data-color="#000000" style="background: #000000;" title="Black"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="strip-container">
                     <canvas id="strip-canvas"></canvas>
+                </div>
+                <div class="share-message-section">
+                    <label for="share-message">Share Message:</label>
+                    <input type="text" id="share-message" placeholder="Check out my photo strip!" maxlength="100">
                 </div>
                 <div class="strip-controls">
                     <button id="download-btn" class="btn btn-primary">💾 Download Strip</button>
@@ -60,7 +107,7 @@
         <div id="error-message" class="error-message" style="display: none;"></div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=13"></script>
 </body>
 </html>
 

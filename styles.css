@@ -6,12 +6,43 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .container {
@@ -22,6 +53,8 @@ body {
     width: 100%;
     padding: 30px;
     animation: fadeIn 0.5s ease-in;
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes fadeIn {
@@ -86,6 +119,38 @@ header p {
     height: auto;
     display: block;
     transform: scaleX(-1);
+}
+
+.countdown-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: 15px;
+}
+
+.countdown-number {
+    font-size: 120px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+    transition: transform 0.2s ease;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 .photo-preview-grid {
@@ -198,6 +263,124 @@ header p {
     gap: 20px;
 }
 
+.share-message-section {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.share-message-section label {
+    font-weight: 600;
+    color: #333;
+    font-size: 1em;
+}
+
+#share-message {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1em;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+#share-message:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+#share-message::placeholder {
+    color: #999;
+}
+
+.color-picker-section {
+    width: 100%;
+    max-width: 640px;
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.color-picker-row {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.color-picker-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.color-picker-section label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.color-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+#background-color {
+    width: 60px;
+    height: 60px;
+    border: 3px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+    background: none;
+    padding: 0;
+}
+
+#background-color::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#background-color::-webkit-color-swatch {
+    border: none;
+    border-radius: 7px;
+}
+
+.preset-colors {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    max-width: 100%;
+}
+
+.color-preset {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.color-preset:hover {
+    transform: scale(1.1);
+    border-color: #667eea;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.color-preset.active {
+    border-color: #667eea;
+    border-width: 4px;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+}
+
 .strip-container {
     width: 100%;
     max-width: 640px;
@@ -253,6 +436,18 @@ header p {
 
     .btn {
         width: 100%;
+    }
+
+    .color-picker-row {
+        gap: 15px;
+    }
+
+    .color-picker-container {
+        justify-content: center;
+    }
+
+    .preset-colors {
+        justify-content: center;
     }
 }
 
