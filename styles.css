@@ -414,47 +414,205 @@ header p {
 }
 
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
     .container {
-        padding: 20px;
+        padding: 15px;
+        border-radius: 15px;
+    }
+
+    header {
+        margin-bottom: 20px;
+    }
+
+    header p {
+        font-size: 0.95em;
     }
 
     .logo {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
     }
     
     .logo-emoji {
-        font-size: 3em;
+        font-size: 2.5em;
     }
     
     header h1 {
-        font-size: 2.2em;
+        font-size: 1.8em;
+    }
+
+    .camera-container {
+        max-width: 100%;
+        border-radius: 15px;
+    }
+
+    #video {
+        width: 100%;
     }
 
     .photo-preview-grid {
-        gap: 8px;
+        gap: 10px;
+        max-width: 100%;
+    }
+
+    .photo-slot {
+        border-width: 3px;
+        border-radius: 10px;
+    }
+
+    .photo-number {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        top: 8px;
+        left: 8px;
     }
 
     .controls,
     .strip-controls {
         flex-direction: column;
         width: 100%;
+        gap: 10px;
     }
 
     .btn {
         width: 100%;
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+
+    .color-picker-section {
+        padding: 15px;
+        border-radius: 12px;
     }
 
     .color-picker-row {
         gap: 15px;
     }
 
+    .color-picker-item {
+        gap: 8px;
+    }
+
+    .color-picker-section label {
+        font-size: 0.95em;
+    }
+
+    #background-color,
+    #border-color {
+        width: 50px;
+        height: 50px;
+    }
+
     .color-picker-container {
         justify-content: center;
+        gap: 10px;
     }
 
     .preset-colors {
         justify-content: center;
+        gap: 6px;
+    }
+
+    .color-preset {
+        width: 32px;
+        height: 32px;
+    }
+
+    .strip-container {
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    #strip-canvas {
+        border-radius: 8px;
+    }
+
+    .share-message-section {
+        max-width: 100%;
+    }
+
+    #share-message {
+        padding: 10px 12px;
+        font-size: 0.95em;
+    }
+
+    .countdown-number {
+        font-size: 100px;
+    }
+
+    .countdown-overlay {
+        border-radius: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+
+    .container {
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    header {
+        margin-bottom: 15px;
+    }
+
+    .logo-emoji {
+        font-size: 2em;
+    }
+    
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    header p {
+        font-size: 0.9em;
+    }
+
+    .photo-preview-grid {
+        gap: 10px;
+    }
+
+    .photo-slot {
+        border-width: 3px;
+    }
+
+    .photo-number {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        top: 8px;
+        left: 8px;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        font-size: 0.95em;
+    }
+
+    .color-picker-section {
+        padding: 12px;
+    }
+
+    #background-color,
+    #border-color {
+        width: 45px;
+        height: 45px;
+    }
+
+    .color-preset {
+        width: 28px;
+        height: 28px;
+    }
+
+    .countdown-number {
+        font-size: 80px;
     }
 }
 
