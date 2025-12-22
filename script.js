@@ -166,113 +166,132 @@ function flashEffect() {
 
 // Create photo strip
 function createStrip() {
-    // Classic photo booth strip dimensions - much shorter and more compact
     const stripWidth = 500;
-    const photoWidth = stripWidth - 30; // Leave 15px padding on each side
-    const photoHeight = photoWidth * 0.65; // Much shorter photos - landscape orientation
-    const spacing = 6; // Very minimal spacing between photos
-    const topPadding = 12;
-    const bottomPadding = 12;
-    
-    const stripHeight = topPadding + (photoHeight * 4) + (spacing * 3) + bottomPadding;
-
-    stripCanvas.width = stripWidth;
-    stripCanvas.height = stripHeight;
-
-    const ctx = stripCanvas.getContext('2d');
-    
-    // Fill with selected background color
-    ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, 0, stripWidth, stripHeight);
-
-    // Draw continuous borders that connect all the way to the edges
     const borderWidth = 10;
-    const photoAreaX = (stripWidth - photoWidth) / 2 - borderWidth;
-    const photoAreaWidth = photoWidth + (borderWidth * 2);
+    const spacing = 8;
+    const topPadding = 15;
+    const bottomPadding = 15;
+    const sidePadding = 15;
     
-    // Draw the complete border frame
-    ctx.fillStyle = borderColor;
-    
-    // Top border (full width, connects to edges)
-    ctx.fillRect(photoAreaX, 0, photoAreaWidth, borderWidth);
-    
-    // Bottom border (full width, connects to edges)
-    ctx.fillRect(photoAreaX, stripHeight - borderWidth, photoAreaWidth, borderWidth);
-    
-    // Left and right vertical borders (full height)
-    ctx.fillRect(photoAreaX, 0, borderWidth, stripHeight); // Left border
-    ctx.fillRect(photoAreaX + photoAreaWidth - borderWidth, 0, borderWidth, stripHeight); // Right border
-    
-    // Draw horizontal dividers between photos
-    for (let i = 1; i < totalPhotos; i++) {
-        const dividerY = topPadding + (i * photoHeight) + ((i - 1) * spacing);
-        ctx.fillRect(photoAreaX, dividerY, photoAreaWidth, borderWidth);
-    }
-
-    // Track loaded images
-    let loadedCount = 0;
-    const totalImages = photos.length;
-    const imagePromises = [];
-
-    // Load all images first
-    photos.forEach((photoData, index) => {
-        const img = new Image();
-        const promise = new Promise((resolve) => {
+    // Load all images first to get their actual dimensions
+    const imagePromises = photos.map((photoData) => {
+        return new Promise((resolve) => {
+            const img = new Image();
             img.onload = () => {
-                loadedCount++;
-                resolve({ img, index });
+                resolve({
+                    img: img,
+                    width: img.width,
+                    height: img.height,
+                    aspect: img.width / img.height
+                });
             };
             img.onerror = () => {
-                loadedCount++;
                 resolve(null);
             };
             img.src = photoData;
         });
-        imagePromises.push(promise);
     });
 
-    // Once all images are loaded, draw them in order
-    Promise.all(imagePromises).then((results) => {
-        results.forEach((result) => {
-            if (!result) return;
+    Promise.all(imagePromises).then((imageData) => {
+        const validImages = imageData.filter(data => data !== null);
+        if (validImages.length === 0) return;
+        
+        // Calculate available width for photos (accounting for borders and padding)
+        const availableWidth = stripWidth - (sidePadding * 2) - (borderWidth * 2);
+        
+        // Calculate each photo's display dimensions maintaining their exact aspect ratio
+        const photoLayouts = validImages.map((data) => {
+            const { img, aspect } = data;
             
-            const { img, index } = result;
+            // Fit photo to available width while maintaining aspect ratio
+            let photoWidth = availableWidth;
+            let photoHeight = photoWidth / aspect;
             
-            // Calculate position for perfectly aligned vertical strip
-            const x = (stripWidth - photoWidth) / 2; // Perfectly centered
-            const y = topPadding + (index * (photoHeight + spacing));
-            
-            // Draw subtle shadow
-            ctx.save();
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
-            ctx.shadowBlur = 8;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 3;
-            
-            // Calculate how to fit the photo maintaining aspect ratio
-            const imgAspect = img.width / img.height;
-            const targetAspect = photoWidth / photoHeight;
-            
-            let drawWidth, drawHeight, drawX, drawY;
-            
-            if (imgAspect > targetAspect) {
-                // Photo is wider - fit to height, center horizontally
-                drawHeight = photoHeight;
-                drawWidth = drawHeight * imgAspect;
-                drawX = x + (photoWidth - drawWidth) / 2;
-                drawY = y;
-            } else {
-                // Photo is taller - fit to width, center vertically
-                drawWidth = photoWidth;
-                drawHeight = drawWidth / imgAspect;
-                drawX = x;
-                drawY = y + (photoHeight - drawHeight) / 2;
-            }
+            return {
+                img: img,
+                width: photoWidth,
+                height: photoHeight,
+                aspect: aspect
+            };
+        });
+        
+        // Calculate total strip height based on actual photo heights
+        let currentY = topPadding;
+        const photoPositions = photoLayouts.map((layout, index) => {
+            const y = currentY;
+            currentY += layout.height + spacing;
+            return {
+                ...layout,
+                y: y
+            };
+        });
+        
+        const stripHeight = currentY - spacing + bottomPadding;
 
-            // Draw the photo
-            ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+        // Set canvas dimensions
+        stripCanvas.width = stripWidth;
+        stripCanvas.height = stripHeight;
+
+        const ctx = stripCanvas.getContext('2d');
+        
+        // Enable high-quality rendering
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        
+        // Fill with selected background color
+        ctx.fillStyle = backgroundColor;
+        ctx.fillRect(0, 0, stripWidth, stripHeight);
+
+        // Calculate border area
+        const minPhotoWidth = Math.min(...photoLayouts.map(p => p.width));
+        const photoAreaX = (stripWidth - minPhotoWidth) / 2 - borderWidth;
+        const photoAreaWidth = minPhotoWidth + (borderWidth * 2);
+        
+        // Draw continuous borders
+        ctx.fillStyle = borderColor;
+        
+        // Top border
+        ctx.fillRect(photoAreaX, 0, photoAreaWidth, borderWidth);
+        
+        // Bottom border
+        ctx.fillRect(photoAreaX, stripHeight - borderWidth, photoAreaWidth, borderWidth);
+        
+        // Left and right vertical borders
+        ctx.fillRect(photoAreaX, 0, borderWidth, stripHeight);
+        ctx.fillRect(photoAreaX + photoAreaWidth - borderWidth, 0, borderWidth, stripHeight);
+        
+        // Draw horizontal dividers between photos
+        for (let i = 0; i < photoPositions.length - 1; i++) {
+            const dividerY = photoPositions[i].y + photoPositions[i].height;
+            ctx.fillRect(photoAreaX, dividerY, photoAreaWidth, borderWidth);
+        }
+
+        // Draw each photo at its natural aspect ratio
+        photoPositions.forEach((photo, index) => {
+            const { img, width, height, y } = photo;
             
-            // Reset shadow
+            // Center photo horizontally
+            const x = (stripWidth - width) / 2;
+            
+            // Draw border around photo
+            ctx.fillStyle = borderColor;
+            ctx.fillRect(
+                x - borderWidth, 
+                y - borderWidth, 
+                width + (borderWidth * 2), 
+                height + (borderWidth * 2)
+            );
+            
+            // Draw photo with shadow
+            ctx.save();
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+            ctx.shadowBlur = 6;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 2;
+            
+            // Draw photo at exact dimensions maintaining aspect ratio
+            ctx.drawImage(img, x, y, width, height);
+            
             ctx.restore();
         });
         
